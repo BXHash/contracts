@@ -63,7 +63,7 @@ contract BXHPool is Ownable {
     uint256 public decayPeriod = 201600; //7*24*1200
     uint256 public decayRatio = 970;//3%
 
-    mapping(uint256=>uint256) public decayTable[];
+    uint256 []public decayTable;
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
@@ -73,7 +73,7 @@ contract BXHPool is Ownable {
         IBXH _bxh,
         uint256 _bxhPerBlock, //42
         uint256 _startBlock,
-        uint256 _decayRatio  
+        uint256 _decayRatio  //970
     ) public {
         bxh = _bxh;
         bxhPerBlock = _bxhPerBlock;
@@ -202,6 +202,7 @@ contract BXHPool is Ownable {
     }
 
 	function batchPrepareRewardTable(uint256 spareCount) public returns (uint256) {
+		require(spareCount<64,"spareCount too large , must less than 64");
         uint256 _phase = phase(block.number);
         if( _phase.add(spareCount) >= decayTable.length){
         	uint256 loop = _phase.add(spareCount).sub(decayTable.length);
@@ -213,7 +214,7 @@ contract BXHPool is Ownable {
         return decayTable[_phase];
     }
 
-    function safePrepareRewardTable(uint256 blockNumber) public internal returns (uint256) {
+    function safePrepareRewardTable(uint256 blockNumber)  internal returns (uint256) {
         uint256 _phase = phase(blockNumber);       
         if( _phase >= decayTable.length){
         	uint256 lastDecayValue = decayTable[decayTable.length-1];
@@ -228,7 +229,7 @@ contract BXHPool is Ownable {
         uint256 m = phase(block.number);
         while (n < m) {
             n++;
-            uint256 r = n.mul(halvingPeriod).add(startBlock);
+            uint256 r = n.mul(decayPeriod).add(startBlock);
             blockReward = blockReward.add((r.sub(_lastRewardBlock)).mul(rewardV(r)));
             _lastRewardBlock = r;
         }
@@ -237,13 +238,29 @@ contract BXHPool is Ownable {
     }
 
 
+    function testBXHBlockRewardV(uint256 _lastRewardBlock,uint256 blocknumber) public view returns (uint256) {
+        uint256 blockReward = 0;
+        uint256 n = phase(_lastRewardBlock);
+        uint256 m = phase(blocknumber);
+        while (n < m) {
+            n++;
+            uint256 r = n.mul(decayPeriod).add(startBlock);
+            blockReward = blockReward.add((r.sub(_lastRewardBlock)).mul(rewardV(r)));
+            _lastRewardBlock = r;
+        }
+        blockReward = blockReward.add((blocknumber.sub(_lastRewardBlock)).mul(rewardV(blocknumber)));
+        return blockReward;
+    }
+
+
+
     function safeGetBXHBlockReward(uint256 _lastRewardBlock) public returns (uint256) {
         uint256 blockReward = 0;
         uint256 n = phase(_lastRewardBlock);
         uint256 m = phase(block.number);
         while (n < m) {
             n++;
-            uint256 r = n.mul(halvingPeriod).add(startBlock);
+            uint256 r = n.mul(decayPeriod).add(startBlock);
             blockReward = blockReward.add((r.sub(_lastRewardBlock)).mul(safePrepareRewardTable(r)));
             _lastRewardBlock = r;
         }
@@ -314,7 +331,7 @@ contract BXHPool is Ownable {
             accMultLpPerShare = accMultLpPerShare.add(TokenPending.mul(1e12).div(pool.totalAmount));
             uint256 userPending = user.amount.mul(accMultLpPerShare).div(1e12).sub(user.multLpRewardDebt);
             if (block.number > pool.lastRewardBlock) {
-                uint256 blockReward = getBXHBlockReward(pool.lastRewardBlock);
+                uint256 blockReward = getBXHBlockRewardV(pool.lastRewardBlock);
                 uint256 bxhReward = blockReward.mul(pool.allocPoint).div(totalAllocPoint);
                 accBXHPerShare = accBXHPerShare.add(bxhReward.mul(1e12).div(pool.totalAmount));
                 return (user.amount.mul(accBXHPerShare).div(1e12).sub(user.rewardDebt), userPending);
@@ -333,7 +350,7 @@ contract BXHPool is Ownable {
         uint256 lpSupply = pool.lpToken.balanceOf(address(this));
         if (user.amount > 0) {
             if (block.number > pool.lastRewardBlock) {
-                uint256 blockReward = getBXHBlockReward(pool.lastRewardBlock);
+                uint256 blockReward = getBXHBlockRewardV(pool.lastRewardBlock);
                 uint256 bxhReward = blockReward.mul(pool.allocPoint).div(totalAllocPoint);
                 accBXHPerShare = accBXHPerShare.add(bxhReward.mul(1e12).div(lpSupply));
                 return user.amount.mul(accBXHPerShare).div(1e12).sub(user.rewardDebt);

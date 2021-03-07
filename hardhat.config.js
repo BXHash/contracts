@@ -65,6 +65,7 @@ module.exports = {
            wht :"5f3f1dBD7B74C6B46e8c44f98792A1dAf8d69154",
            hdot:"FD471836031dc5108809D173A067e8486B9047A3",
            bxh :"CD8a1C3ba11CF5ECfa6267617243239504a98d90",
+           bxhpool:"4C2F7092C2aE51D986bEFEe378e50BD4dB99C901",
            uniswap:{
              factory:"21dF544947ba3E8b3c32561399E88B52Dc8b2823",
              router:"D8a5a9b31c3C0232E196d518E89Fd8bF83AcAd43",
@@ -96,8 +97,8 @@ module.exports = {
            uniswap:{
              factory:"851356ae760d987E095750cCeb3bC6014560891C",
              router:"95401dc811bb5740090279Ba06cfA8fcF6113778",
-           }
-           bxhpool: "998abeb3E57409262aE5b751f60747921B33613E",
+           },
+           bxhpool: "4826533B4897376654Bb4d4AD88B7faFD0C98528",
            airdrop:"70e0bA845a1A0F2DA3359C97E0285013525FFC49",
          }
       },

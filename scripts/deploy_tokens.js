@@ -51,7 +51,7 @@ async function main() {
 
 
   const BXHPool = await hre.ethers.getContractFactory("BXHPool");
-  const bxhpool = await BXHPool.deploy(bxh.address,42,0);
+  const bxhpool = await BXHPool.deploy(bxh.address,42,0,970);
   await bxhpool.deployed();
   console.log("BXHPool deployed to:", bxhpool.address);
 
