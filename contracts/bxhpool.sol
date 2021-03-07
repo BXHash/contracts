@@ -60,7 +60,10 @@ contract BXHPool is Ownable {
     // multLP Token
     address public multLpToken;
     // How many blocks are halved
-    uint256 public halvingPeriod = 201600; //7*24*1200
+    uint256 public decayPeriod = 201600; //7*24*1200
+    uint256 public decayRatio = 970;//3%
+
+    mapping(uint256=>uint256) public decayTable[];
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
@@ -69,16 +72,29 @@ contract BXHPool is Ownable {
     constructor(
         IBXH _bxh,
         uint256 _bxhPerBlock, //42
-        uint256 _startBlock
+        uint256 _startBlock,
+        uint256 _decayRatio  
     ) public {
         bxh = _bxh;
         bxhPerBlock = _bxhPerBlock;
         startBlock = _startBlock;
+        decayRatio = _decayRatio;
+     	decayTable.push(_bxhPerBlock); 
+
+     	for(uint256 i=0;i<32;i++) {
+     		decayTable.push(decayTable[i].mul(decayRatio).div(1000));
+     	}
     }
 
-    function setHalvingPeriod(uint256 _block) public onlyOwner {
-        halvingPeriod = _block;
+    function setDecayPeriod(uint256 _block) public onlyOwner {
+        decayPeriod = _block;
     }
+
+	function setDecayRatio(uint256 _ratio) public onlyOwner {
+		require(_ratio<1000,"ratio should less than 1000");
+        decayRatio = _ratio;
+    }
+
 
     // Set the number of bxh produced by each block
     function setBXHPerBlock(uint256 _newPerBlock) public onlyOwner {
@@ -170,33 +186,71 @@ contract BXHPool is Ownable {
     }
 
     function phase(uint256 blockNumber) public view returns (uint256) {
-        if (halvingPeriod == 0) {
+        if (decayPeriod == 0) {
             return 0;
         }
         if (blockNumber > startBlock) {
-            return (blockNumber.sub(startBlock).sub(1)).div(halvingPeriod);
+            return (blockNumber.sub(startBlock).sub(1)).div(decayPeriod);
         }
         return 0;
     }
 
-    function reward(uint256 blockNumber) public view returns (uint256) {
+    function rewardV(uint256 blockNumber) public view returns (uint256) {
         uint256 _phase = phase(blockNumber);
-        return bxhPerBlock.div(2 ** _phase);
+        require(_phase<decayTable.length,"phase not ready");
+        return decayTable[_phase];
     }
 
-    function getBXHBlockReward(uint256 _lastRewardBlock) public view returns (uint256) {
+	function batchPrepareRewardTable(uint256 spareCount) public returns (uint256) {
+        uint256 _phase = phase(block.number);
+        if( _phase.add(spareCount) >= decayTable.length){
+        	uint256 loop = _phase.add(spareCount).sub(decayTable.length);
+	        for(uint256 i=0;i<=loop;i++) {
+	        	uint256 lastDecayValue = decayTable[decayTable.length-1];
+	     		decayTable.push(lastDecayValue.mul(decayRatio).div(1000));
+	     	}
+        }
+        return decayTable[_phase];
+    }
+
+    function safePrepareRewardTable(uint256 blockNumber) public internal returns (uint256) {
+        uint256 _phase = phase(blockNumber);       
+        if( _phase >= decayTable.length){
+        	uint256 lastDecayValue = decayTable[decayTable.length-1];
+	     	decayTable.push(lastDecayValue.mul(decayRatio).div(1000));
+        }
+        return decayTable[_phase];
+    }
+
+    function getBXHBlockRewardV(uint256 _lastRewardBlock) public view returns (uint256) {
         uint256 blockReward = 0;
         uint256 n = phase(_lastRewardBlock);
         uint256 m = phase(block.number);
         while (n < m) {
             n++;
             uint256 r = n.mul(halvingPeriod).add(startBlock);
-            blockReward = blockReward.add((r.sub(_lastRewardBlock)).mul(reward(r)));
+            blockReward = blockReward.add((r.sub(_lastRewardBlock)).mul(rewardV(r)));
             _lastRewardBlock = r;
         }
-        blockReward = blockReward.add((block.number.sub(_lastRewardBlock)).mul(reward(block.number)));
+        blockReward = blockReward.add((block.number.sub(_lastRewardBlock)).mul(rewardV(block.number)));
         return blockReward;
     }
+
+
+    function safeGetBXHBlockReward(uint256 _lastRewardBlock) public returns (uint256) {
+        uint256 blockReward = 0;
+        uint256 n = phase(_lastRewardBlock);
+        uint256 m = phase(block.number);
+        while (n < m) {
+            n++;
+            uint256 r = n.mul(halvingPeriod).add(startBlock);
+            blockReward = blockReward.add((r.sub(_lastRewardBlock)).mul(safePrepareRewardTable(r)));
+            _lastRewardBlock = r;
+        }
+        blockReward = blockReward.add((block.number.sub(_lastRewardBlock)).mul(safePrepareRewardTable(block.number)));
+        return blockReward;
+    }
+
 
     // Update reward variables for all pools. Be careful of gas spending!
     function massUpdatePools() public {
@@ -226,7 +280,7 @@ contract BXHPool is Ownable {
                 return;
             }
         }
-        uint256 blockReward = getBXHBlockReward(pool.lastRewardBlock);
+        uint256 blockReward = safeGetBXHBlockReward(pool.lastRewardBlock);
         if (blockReward <= 0) {
             return;
         }

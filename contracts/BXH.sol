@@ -11,8 +11,8 @@ import "./DelegateERC20.sol";
 
 
 contract BXHToken is DelegateERC20,IBXH, Ownable {
-    uint256 private constant preMineSupply = 200000000 * 1e18; 
-    uint256 private constant maxSupply = 1000000000 * 1e18;     // the total supply
+    uint256 private constant preMineSupply = 180000000 * 1e18; 
+    uint256 private constant maxSupply =    1000000000 * 1e18;     // the total supply
 
     using EnumerableSet for EnumerableSet.AddressSet;
     EnumerableSet.AddressSet private _minters;
