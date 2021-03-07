@@ -69,7 +69,11 @@ module.exports = {
            uniswap:{
              factory:"21dF544947ba3E8b3c32561399E88B52Dc8b2823",
              router:"D8a5a9b31c3C0232E196d518E89Fd8bF83AcAd43",
-           }
+           },
+           investTeamLock:"0xe8D2A1E88c91DCd5433208d4152Cc4F399a7e91d",
+           marketTeamLock:"0x5067457698Fd6Fa1C6964e416b3f42713513B3dD",
+           devTeamLock:"0x18E317A7D70d8fBf8e6E893616b52390EbBdb629",
+
          }
       }
     },
@@ -100,6 +104,10 @@ module.exports = {
            },
            bxhpool: "4826533B4897376654Bb4d4AD88B7faFD0C98528",
            airdrop:"70e0bA845a1A0F2DA3359C97E0285013525FFC49",
+           investTeamLock:"0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf",
+           marketTeamLock:"0x0E801D84Fa97b50751Dbf25036d067dCf18858bF",
+           devTeamLock:"0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf",
+
          }
       },
 

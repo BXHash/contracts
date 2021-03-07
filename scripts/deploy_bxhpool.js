@@ -10,11 +10,7 @@ var Assert = require('assert');
 
 async function main() {
 
-  const feeAdrr = hre.network.config.bxh.address.fee;
-  console.log("fee to :",feeAdrr);
-
   const addrs =  hre.network.config.bxh.address;
-
 
   const accounts = await ethers.getSigners();
   const BXH = await hre.ethers.getContractFactory("BXHToken");
