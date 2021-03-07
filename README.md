@@ -4,7 +4,8 @@ https://bxh.com.
 
 ## Deployed Contracts
 
-https://bxh.com/contracts
+https://github.com/BXHash/contracts
+
 
 ## Docs
 
