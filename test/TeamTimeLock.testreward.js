@@ -4,6 +4,8 @@ const { expect } = require("chai")
 const { time } = require("./utilities")
 
 
+
+
 describe("TeamTimeLock", function () {
   before(async function () {
     
@@ -28,7 +30,7 @@ describe("TeamTimeLock", function () {
   })
 
   beforeEach(async function () {
-
+      this.accounts = await ethers.getSigners();
   })
 
 
@@ -36,8 +38,11 @@ describe("TeamTimeLock", function () {
       
       for(var i=0;i<=24;i+=2){
           var blocknumer = i*30*24*1200+1;//month
-          var reward = await this.investTeamLock.getReward(blocknumer);
-          console.log("investTeamLock:"+i+",reward="+reward/1e18);
+          var totalReward = await this.investTeamLock.getTotalReward(blocknumer);
+          var reward0 = await this.investTeamLock.getReward(this.accounts[0].address,blocknumer);
+          var reward1 = await this.investTeamLock.getReward(this.accounts[1].address,blocknumer);
+          var reward2 = await this.investTeamLock.getReward(this.accounts[2].address,blocknumer);
+          console.log("investTeamLock:"+i+",totalReward="+totalReward/1e18+"["+reward0/1e18+","+reward1/1e18+","+reward2/1e18+"]");
       }
   })
   
@@ -45,8 +50,11 @@ describe("TeamTimeLock", function () {
   it("marketTeamLock max 45000000", async function () {
       for(var i=0;i<=24;i+=2){
           var blocknumer = i*30*24*1200+1;//month
-          var reward = await this.marketTeamLock.getReward(blocknumer);
-          console.log("marketTeamLock:"+i+",reward="+reward/1e18);
+          var totalReward = await this.marketTeamLock.getTotalReward(blocknumer);
+          var reward0 = await this.marketTeamLock.getReward(this.accounts[0].address,blocknumer);
+          var reward1 = await this.marketTeamLock.getReward(this.accounts[1].address,blocknumer);
+          var reward2 = await this.marketTeamLock.getReward(this.accounts[2].address,blocknumer);
+          console.log("marketTeamLock:"+i+",totalReward="+totalReward/1e18+"["+reward0/1e18+","+reward1/1e18+","+reward2/1e18+"]");
       }
   })
   
@@ -54,8 +62,12 @@ describe("TeamTimeLock", function () {
   it("devTeamLock max 100000000", async function () {
       for(var i=0;i<=48;i+=2){
           var blocknumer = i*30*24*1200+1;//month
-          var reward = await this.devTeamLock.getReward(blocknumer);
-          console.log("devTeamLock:"+i+",reward="+reward/1e18);
+          var totalReward = await this.devTeamLock.getTotalReward(blocknumer);
+          var reward0 = await this.devTeamLock.getReward(this.accounts[0].address,blocknumer);
+          var reward1 = await this.devTeamLock.getReward(this.accounts[1].address,blocknumer);
+          var reward2 = await this.devTeamLock.getReward(this.accounts[2].address,blocknumer);
+          console.log("devTeamLock:"+i+",totalReward="+totalReward/1e18+"["+reward0/1e18+","+reward1/1e18+","+reward2/1e18+"]");
+
       }
   })
   

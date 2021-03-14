@@ -117,11 +117,6 @@ contract Airdrop is Ownable {
 
     
 
-    function sweepToken(address token,address to)  public onlyOwner {
-        uint256 bal = IERC20(token).balanceOf(address(this));
-        require(bal>0,"not enough balance");
-        TransferHelper.safeTransfer(token,to, bal);
-    }
 
 
 }

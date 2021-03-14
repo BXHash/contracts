@@ -22,10 +22,8 @@ contract BXHToken is DelegateERC20,IBXH, Ownable {
     }
 
     // mint with max supply
-    function mint(address _to, uint256 _amount) public onlyMinter override returns (bool) {
-        if (_amount.add(totalSupply()) > maxSupply) {
-            return false;
-        }
+    function mint(address _to, uint256 _amount) external onlyMinter override  returns (bool) {
+        require (_amount.add(totalSupply()) <= maxSupply) ;
         _mint(_to, _amount);
         return true;
     }
