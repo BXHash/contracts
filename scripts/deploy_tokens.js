@@ -15,12 +15,15 @@ async function main() {
 
   const addrs =  hre.network.config.bxh.address;
 
-
   const accounts = await ethers.getSigners();
+
+  console.log("deploy account: " + accounts[0].address);
   const BXH = await hre.ethers.getContractFactory("BXHToken");
-  const bxh = await BXH.deploy();
-  await bxh.deployed();
-  console.log("BXH deployed to:", bxh.address);
+  // const bxh = await BXH.deploy();
+  // await bxh.deployed();
+  const bxh = await BXH.attach(addrs.bxh);
+
+  console.log("BXH attached to:", bxh.address);
 
 
   const ERC20Template = await hre.ethers.getContractFactory("ERC20Template");
@@ -38,11 +41,13 @@ async function main() {
   const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory");
   const factory = await UniswapV2Factory.deploy(feeAdrr);
   await factory.deployed();
-  console.log("factory deployed to:", factory.address);
+  // const factory = await UniswapV2Factory.attach(addrs.uniswap.factory);
 
-  await factory.setFeeTo(feeAdrr);
+  console.log("factory attached to:", factory.address);
 
+  // await factory.setFeeTo(feeAdrr);
 
+  // console.log("factory setfee to:", feeAdrr);
 
   const UniswapV2Router02 = await hre.ethers.getContractFactory("UniswapV2Router02");
   const router = await UniswapV2Router02.deploy(factory.address,wht.address);
