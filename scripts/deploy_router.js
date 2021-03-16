@@ -39,30 +39,22 @@ async function main() {
 
 
   const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory");
-  const factory = await UniswapV2Factory.deploy(feeAdrr);
-  await factory.deployed();
-  // const factory = await UniswapV2Factory.attach(addrs.uniswap.factory);
+  // const factory = await UniswapV2Factory.deploy(feeAdrr);
+  // await factory.deployed();
 
-  console.log("factory deployed to:", factory.address);
+  const factory = await UniswapV2Factory.attach(addrs.uniswap.factory);
+
+  console.log("factory attached to:", factory.address);
 
   // await factory.setFeeTo(feeAdrr);
 
-  // console.log("factory setfee to:", feeAdrr);
+  const pairCodeHash = await factory.pairCodeHash();
+  console.log("factory pairCodeHash is:", pairCodeHash);
 
-
-  const BXHPool = await hre.ethers.getContractFactory("BXHPool");
-  const bxhpool = await BXHPool.deploy(bxh.address,42,0,970);
-  await bxhpool.deployed();
-  console.log("BXHPool deployed to:", bxhpool.address);
-
-
-  const Airdrop = await hre.ethers.getContractFactory("Airdrop");
-  const airdrop = await Airdrop.deploy(usdt.address,bxh.address);
-  await airdrop.deployed();
-  console.log("Airdrop deployed to:", airdrop.address);
-
-
-  console.log("factory fee to:", await factory.feeTo());
+  const UniswapV2Router02 = await hre.ethers.getContractFactory("UniswapV2Router02");
+  const router = await UniswapV2Router02.deploy(factory.address,wht.address);
+  await router.deployed();
+  console.log("router deployed to:", router.address);
 
 }
 

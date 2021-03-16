@@ -15,22 +15,21 @@ async function main() {
 
   const addrs =  hre.network.config.bxh.address;
 
-
   const accounts = await ethers.getSigners();
 
- 
-  const HUSD = await hre.ethers.getContractFactory("HRC20HUSD");
+  const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory");
+  // const factory = await UniswapV2Factory.deploy(feeAdrr);
+  // await factory.deployed();
 
-  const husd = await HUSD.attach(addrs.husd);
+  const factory = await UniswapV2Factory.attach(addrs.uniswap.factory);
 
-  console.log("HUSD attached to:", husd.address);
+  console.log("factory attached to:", factory.address);
 
-  await husd.issue(accounts[0].address,10000000);
+  // await factory.setFeeTo(feeAdrr);
 
-  const balance = await husd.balanceOf(accounts[0].address);
+  const pairCodeHash = await factory.pairCodeHash();
+  console.log("factory pairCodeHash is:", pairCodeHash);
 
-
-  console.log("HUSD.balance=:",balance);
 
 }
 

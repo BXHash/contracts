@@ -49,19 +49,6 @@ async function main() {
 
   // console.log("factory setfee to:", feeAdrr);
 
-
-  const BXHPool = await hre.ethers.getContractFactory("BXHPool");
-  const bxhpool = await BXHPool.deploy(bxh.address,42,0,970);
-  await bxhpool.deployed();
-  console.log("BXHPool deployed to:", bxhpool.address);
-
-
-  const Airdrop = await hre.ethers.getContractFactory("Airdrop");
-  const airdrop = await Airdrop.deploy(usdt.address,bxh.address);
-  await airdrop.deployed();
-  console.log("Airdrop deployed to:", airdrop.address);
-
-
   console.log("factory fee to:", await factory.feeTo());
 
 }

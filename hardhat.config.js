@@ -1,11 +1,12 @@
 require("@nomiclabs/hardhat-waffle");
+require("@nomiclabs/hardhat-etherscan");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 
 const accounts = {
   mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
-  initialIndex:8
+
   // accountsBalance: "990000000000000000000",
 }
 
@@ -51,6 +52,11 @@ module.exports = {
     overwrite: false,
     runOnCompile: true,
   },
+  etherscan: {
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey:"6IQTZTMD392X2U2SYZBABWDS8KB6D8UD4T"
+  },
   defaultNetwork: "local",
   networks: {
     local: {
@@ -67,11 +73,12 @@ module.exports = {
            wht :"0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
            hdot:"0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
            bxh :"CD8a1C3ba11CF5ECfa6267617243239504a98d90",
-           bxhpool:"4C2F7092C2aE51D986bEFEe378e50BD4dB99C901",
+           bxhpool:"0x9E545E3C0baAB3E08CdfD552C960A1050f373042",
            uniswap:{
-             factory:"21dF544947ba3E8b3c32561399E88B52Dc8b2823",
-             router:"D8a5a9b31c3C0232E196d518E89Fd8bF83AcAd43",
+             factory:"0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB",
+             router:"0x96F3Ce39Ad2BfDCf92C0F6E2C2CAbF83874660Fc",
            },
+           airdrop:"0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
            investTeamLock:"0xc582Bc0317dbb0908203541971a358c44b1F3766",
            marketTeamLock:"0x74Cf9087AD26D541930BaC724B7ab21bA8F00a27",
            devTeamLock:"0xA56F946D6398Dd7d9D4D9B337Cf9E0F68982ca5B",
@@ -103,8 +110,8 @@ module.exports = {
            hdot:"0xa2c49cee16a5e5bdefde931107dc1fae9f7773e3",
            bxh :"0x2E90FF584Bbe93709fFc8577E7b58d921Da6A4ce",
            uniswap:{
-             factory:"0x17378b69953E27d2A35f402159b9c6B951545daA",
-             router:"0xE8bA10E69caD646D8a4917067043A655E6cBcA80",
+             factory:"0xB6B1fE87cAa52D968832a5053116af08f4601475",
+             router:"0x9fE4C3F35a92F7C7278BB951adABb5Bd438A0637",
            },
            bxhpool: "0x1bCb6DF7Cdd74E391d809C167a8E262709614985",
            airdrop:"0x11FAc317F65Ff823B9F79f4e1CaFDe55E93484DD",

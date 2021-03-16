@@ -10,27 +10,23 @@ var Assert = require('assert');
 
 async function main() {
 
-  const feeAdrr = hre.network.config.bxh.address.fee;
-  console.log("fee to :",feeAdrr);
-
   const addrs =  hre.network.config.bxh.address;
 
-
   const accounts = await ethers.getSigners();
+  const BXHPool = await hre.ethers.getContractFactory("BXHPool");
+  const bxhpool = await BXHPool.attach(addrs.bxhpool);
 
- 
-  const HUSD = await hre.ethers.getContractFactory("HRC20HUSD");
+  console.log("BXHPool attached to:", bxhpool.address);
 
-  const husd = await HUSD.attach(addrs.husd);
+  const owner = await bxhpool.owner();
 
-  console.log("HUSD attached to:", husd.address);
-
-  await husd.issue(accounts[0].address,10000000);
-
-  const balance = await husd.balanceOf(accounts[0].address);
+  // await bxhpool.transferOwnership("0xdEa9d2E81c9bb73c890A822F65118a3651c258D5");
 
 
-  console.log("HUSD.balance=:",balance);
+  const newowner = await bxhpool.owner();
+
+
+  console.log("BXHPool owner transfer from:%s to %s", owner,newowner);
 
 }
 
