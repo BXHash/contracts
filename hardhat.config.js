@@ -6,7 +6,7 @@ require("@nomiclabs/hardhat-etherscan");
 
 const accounts = {
   mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
-
+  initialIndex: 8
   // accountsBalance: "990000000000000000000",
 }
 
