@@ -42,6 +42,7 @@ contract Airdrop is Ownable {
         uint256 rewardPerUser;
         uint256 totalReward;
         uint256 totalAlloc;
+        uint256 totalRequest;
     }
 
     address public usdt;
@@ -52,12 +53,15 @@ contract Airdrop is Ownable {
     // Info of each user that tokens.
     mapping(uint256 => mapping(address => UserInfo)) public userInfo;
 
+    mapping(uint256 => mapping(address => UserInfo)) public userRequestInfo;
+
     // Total allocation points. Must be the sum of all allocation points in all pools.
     uint256 public totalAllocAmount = 0;
     uint256 public totalRewardAmount = 0;
     uint256 public currentPeroid = 0;
 
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
+    event RequestWithdraw(address indexed user, uint256 indexed pid, uint256 amount);
 
     event EmergencyWithdraw(address indexed user, uint256 indexed pid, uint256 amount);
 
@@ -86,13 +90,14 @@ contract Airdrop is Ownable {
             price : _price,
             rewardPerUser: _rewardPerUser,
             totalReward: _totalReward,
-            totalAlloc: 0
+            totalAlloc: 0,
+            totalRequest: 0
         }));
 
     }
 
     // Deposit USDT tokens to withdraw bxh;
-    function withdraw() public {
+    function withdraw() public onlyOwner {
         
         require(currentPeroid < peroidInfo.length,"No AirDrops");
 
@@ -113,6 +118,21 @@ contract Airdrop is Ownable {
 
         TransferHelper.safeTransfer(bxh,address(msg.sender), user.amount);
         emit Withdraw(msg.sender, currentPeroid, user.amount);
+    }
+
+    function requestWithdraw() public {
+        
+        require(currentPeroid < peroidInfo.length,"No AirDrops");
+
+        PeriodInfo storage peroid = peroidInfo[currentPeroid];
+        require(block.number >= peroid.startBlock,"Not Started");
+        require(block.number <= peroid.endBlock,"AirDrop Peroid Ended");
+        // require(peroid.totalAlloc.add(peroid.rewardPerUser)<peroid.totalReward,"AirDrop AllocAmount exeed MaxAmount");
+        UserInfo storage user = userRequestInfo[currentPeroid][msg.sender];
+        require(user.amount == 0, "User already requested for current peroid");
+        peroid.totalRequest=peroid.totalRequest.add(peroid.rewardPerUser);
+        user.amount = peroid.rewardPerUser;
+        emit RequestWithdraw(msg.sender, currentPeroid, user.amount);
     }
 
     

@@ -114,10 +114,11 @@ module.exports = {
              router:"0x9fE4C3F35a92F7C7278BB951adABb5Bd438A0637",
            },
            bxhpool: "0x1bCb6DF7Cdd74E391d809C167a8E262709614985",
-           airdrop:"0x11FAc317F65Ff823B9F79f4e1CaFDe55E93484DD",
-           investTeamLock:"0x0ed64d01D0B4B655E410EF1441dD677B695639E7",
-           marketTeamLock:"0xde2Bd2ffEA002b8E84ADeA96e5976aF664115E2c",
-           devTeamLock:"0xc582Bc0317dbb0908203541971a358c44b1F3766",
+           airdrop:"0x5391B31762cCD7544a9C2044807632f33a9C33b6",
+           airdropPool:"0x11B982bf377Fb49a60107DD6472602C2c6d07e7D",
+           investTeamLock:"0x03d6c99Db8b37DCF25B61823438E9db55EdFE492",
+           marketTeamLock:"0x717a9Af6497375d1f4500B67631Ddfdd95a5BE90",
+           devTeamLock:"0xa524a620797f2BE9Dc45A4a74224D6c795Cd0e96",
 
          }
       },

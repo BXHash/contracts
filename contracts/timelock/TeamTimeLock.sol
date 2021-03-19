@@ -129,7 +129,7 @@ contract TeamTimeLock is Ownable{
             uint256 reward = getCurrentUserReward(beneficiary);
             require(reward > 0, "TimeLock: no reward");
             user.rewardDebt = user.rewardDebt.add(reward);
-            token.safeTransfer(msg.sender, reward);
+            token.safeTransfer(beneficiary, reward);
             emit WithDraw(msg.sender, beneficiary, reward);
         }
     }
