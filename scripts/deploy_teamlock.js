@@ -23,7 +23,7 @@ async function main() {
   // console.log("reward=",3000*10000*10e18/20736000);
   const investTeamLock = await TeamTimeLock.deploy(bxh.address,
     3000*10000,
-    0,20736000,"investor");
+    3195140,23931140,"investor");
   await investTeamLock.deployed();
   console.log("investTeamLock deployed to:", investTeamLock.address);
   // await investTeamLock.addUser(accounts[0].address,20);
@@ -34,7 +34,7 @@ async function main() {
 
   const marketTeamLock = await TeamTimeLock.deploy(bxh.address,
     4500*10000,
-    0,20736000,"market");
+    3195140,23931140,"market");
   await marketTeamLock.deployed();
   console.log("marketTeamLock deployed to:", marketTeamLock.address);
 
@@ -46,7 +46,7 @@ async function main() {
 // console.log("reward=",3000*10000*10e18/20736000);
   const devTeamLock = await TeamTimeLock.deploy(bxh.address,
     10000*10000,
-    0,20736000*2,"dev");
+    4059140,45531140,"dev");
   await devTeamLock.deployed();
   console.log("devTeamLock deployed to:", devTeamLock.address);
 

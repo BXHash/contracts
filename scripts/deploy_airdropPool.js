@@ -25,6 +25,11 @@ async function main() {
   console.log("AirdropPool deployed to:", airdropPool.address);
   ;
 
+  await airdropPool.transferOwnership(addrs.owner);
+
+  const newowner = await airdropPool.owner();
+
+  console.log("AirdropPool owner transfer to %s", newowner);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

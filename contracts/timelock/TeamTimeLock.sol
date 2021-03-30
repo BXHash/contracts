@@ -51,6 +51,19 @@ contract TeamTimeLock is Ownable{
         paused = true;
     }
 
+    function initParams(uint256 _maxReward,
+        uint256 _startBlock,
+        uint256 _endBlock) public onlyOwner {
+        require(paused == true, "Benifit has been started");
+
+        maxReward = _maxReward.mul(1e18);
+        blockReward = maxReward.div(_endBlock.sub(_startBlock));
+        startBlock = _startBlock;
+        endBlock = _endBlock;
+        rewardDept = 0;
+
+    }
+
 
     modifier notPause() {
         require(paused == false, "Benifit has been suspended");

@@ -6,7 +6,7 @@ require("@nomiclabs/hardhat-etherscan");
 
 const accounts = {
   mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
-  initialIndex: 8
+  // initialIndex: 8
   // accountsBalance: "990000000000000000000",
 }
 
@@ -82,7 +82,7 @@ module.exports = {
            investTeamLock:"0xc582Bc0317dbb0908203541971a358c44b1F3766",
            marketTeamLock:"0x74Cf9087AD26D541930BaC724B7ab21bA8F00a27",
            devTeamLock:"0xA56F946D6398Dd7d9D4D9B337Cf9E0F68982ca5B",
-
+           raiseDao:"0x98eDDadCfde04dC22a0e62119617e74a6Bc77313",
          }
       }
     },
@@ -100,6 +100,7 @@ module.exports = {
       blockGasLimit:0x280de80,
       bxh:{
          address:{
+           owner:"0xdEa9d2E81c9bb73c890A822F65118a3651c258D5",
            fee: "0xdEa9d2E81c9bb73c890A822F65118a3651c258D5",
            usdt:"0xa71edc38d189767582c38a3145b5873052c3e47a",
            husd:"0x0298c2b32eae4da002a15f36fdf7615bea3da047",
@@ -108,17 +109,18 @@ module.exports = {
            hltc:"0xecb56cf772b5c9a6907fb7d32387da2fcbfb63b4",
            wht :"0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f",
            hdot:"0xa2c49cee16a5e5bdefde931107dc1fae9f7773e3",
-           bxh :"0x2E90FF584Bbe93709fFc8577E7b58d921Da6A4ce",
+           bxh :"0xcBD6Cb9243d8e3381Fea611EF023e17D1B7AeDF0",
            uniswap:{
-             factory:"0xB6B1fE87cAa52D968832a5053116af08f4601475",
-             router:"0x9fE4C3F35a92F7C7278BB951adABb5Bd438A0637",
+             factory:"0xe0367ec2bd4Ba22B1593E4fEFcB91D29DE6C512a",
+             router:"0x00eFB96dBFE641246E961b472C0C3fC472f6a694",
            },
-           bxhpool: "0x1bCb6DF7Cdd74E391d809C167a8E262709614985",
-           airdrop:"0x5391B31762cCD7544a9C2044807632f33a9C33b6",
-           airdropPool:"0x11B982bf377Fb49a60107DD6472602C2c6d07e7D",
-           investTeamLock:"0x03d6c99Db8b37DCF25B61823438E9db55EdFE492",
-           marketTeamLock:"0x717a9Af6497375d1f4500B67631Ddfdd95a5BE90",
-           devTeamLock:"0xa524a620797f2BE9Dc45A4a74224D6c795Cd0e96",
+           bxhpool: "0xe3e75Ab09FA0E045523A6B4E81bdB5F11a8bc99c",
+           airdrop:"0xcA1530D5282C703bf3c73c6A08794020dae8b397",
+           airdropPool:"0x0Ef67c16904Af312796560dF80E60581C43C4e24",
+           investTeamLock:"0xD7B6192601F6e671E42926797a2462a5b6B7b13d",
+           marketTeamLock:"0xee73ae5C86fd78DbFF1e07a6e9e42D4F1EafDeb0",
+           devTeamLock:"0x186Dc1ebF9281F98167cfD0A0794B9934587A142",
+           raiseDao:"0x98eDDadCfde04dC22a0e62119617e74a6Bc77313",
 
          }
       },

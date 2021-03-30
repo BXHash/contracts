@@ -124,14 +124,14 @@ contract UniswapV2Pair is UniswapV2ERC20 {
         uint _totalSupply = totalSupply; // gas savings, must be defined here since totalSupply can update in _mintFee
         if (_totalSupply == 0) {
             address migrator = IUniswapV2Factory(factory).migrator();
-            if (msg.sender == migrator) {
-                liquidity = IMigrator(migrator).desiredLiquidity();
-                require(liquidity > 0 && liquidity != uint256(-1), "Bad desired liquidity");
-            } else {
+            // if (msg.sender == migrator) {
+                // liquidity = IMigrator(migrator).desiredLiquidity();
+                // require(liquidity > 0 && liquidity != uint256(-1), "Bad desired liquidity");
+            // } else {
                 require(migrator == address(0), "Must not have migrator");
                 liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
                 _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
-            }
+            // }
         } else {
             liquidity = Math.min(amount0.mul(_totalSupply) / _reserve0, amount1.mul(_totalSupply) / _reserve1);
         }
@@ -201,6 +201,7 @@ contract UniswapV2Pair is UniswapV2ERC20 {
 
     // force balances to match reserves
     function skim(address to) external lock {
+        // require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
         address _token0 = token0; // gas savings
         address _token1 = token1; // gas savings
         _safeTransfer(_token0, to, IERC20Uniswap(_token0).balanceOf(address(this)).sub(reserve0));

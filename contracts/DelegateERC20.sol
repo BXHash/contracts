@@ -101,9 +101,9 @@ abstract contract DelegateERC20 is ERC20 {
         );
 
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), "MdxToken::delegateBySig: invalid signature");
-        require(nonce == nonces[signatory]++, "MdxToken::delegateBySig: invalid nonce");
-        require(now <= expiry, "MdxToken::delegateBySig: signature expired");
+        require(signatory != address(0), "Token::delegateBySig: invalid signature");
+        require(nonce == nonces[signatory]++, "Token::delegateBySig: invalid nonce");
+        require(now <= expiry, "Token::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -133,7 +133,7 @@ abstract contract DelegateERC20 is ERC20 {
     view
     returns (uint256)
     {
-        require(blockNumber < block.number, "MdxToken::getPriorVotes: not yet determined");
+        require(blockNumber < block.number, "Token::getPriorVotes: not yet determined");
 
         uint32 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
@@ -206,7 +206,7 @@ abstract contract DelegateERC20 is ERC20 {
     )
     internal
     {
-        uint32 blockNumber = safe32(block.number, "MdxToken::_writeCheckpoint: block number exceeds 32 bits");
+        uint32 blockNumber = safe32(block.number, "Token::_writeCheckpoint: block number exceeds 32 bits");
 
         if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
             checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;

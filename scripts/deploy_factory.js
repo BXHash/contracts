@@ -3,6 +3,7 @@
 const hre = require("hardhat");
 require("@nomiclabs/hardhat-waffle");
 var Assert = require('assert');
+const web3 = require('web3');
 
 
 

@@ -237,23 +237,6 @@ contract BXHPool is Ownable {
         return blockReward;
     }
 
-
-    function testBXHBlockRewardV(uint256 _lastRewardBlock,uint256 blocknumber) public view returns (uint256) {
-        uint256 blockReward = 0;
-        uint256 n = phase(_lastRewardBlock);
-        uint256 m = phase(blocknumber);
-        while (n < m) {
-            n++;
-            uint256 r = n.mul(decayPeriod).add(startBlock);
-            blockReward = blockReward.add((r.sub(_lastRewardBlock)).mul(rewardV(r)));
-            _lastRewardBlock = r;
-        }
-        blockReward = blockReward.add((blocknumber.sub(_lastRewardBlock)).mul(rewardV(blocknumber)));
-        return blockReward;
-    }
-
-
-
     function safeGetBXHBlockReward(uint256 _lastRewardBlock) public returns (uint256) {
         uint256 blockReward = 0;
         uint256 n = phase(_lastRewardBlock);
