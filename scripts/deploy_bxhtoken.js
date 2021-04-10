@@ -19,9 +19,9 @@ async function main() {
 
   console.log("deploy account: " + accounts[0].address);
   const BXH = await hre.ethers.getContractFactory("BXHToken");
-  const bxh = await BXH.deploy();
-  await bxh.deployed();
-  // const bxh = await BXH.attach(addrs.bxh);
+  // const bxh = await BXH.deploy();
+  // await bxh.deployed();
+  const bxh = await BXH.attach(addrs.bxh);
   console.log("BXH deployed to:", bxh.address);
 
   const owner = await bxh.owner();

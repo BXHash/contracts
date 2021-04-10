@@ -218,6 +218,27 @@ contract RaiseDAO is ReentrancyGuard,Ownable {
 
   }
 
+  function harvestV(address userAddr) public view returns (uint256 offeringTokenAmount,uint256 currentAmount,uint256 refundingTokenAmount) 
+  {
+     return harvestVWhen(block.number,userAddr);
+  }
+
+  function harvestVWhen( uint256 blocknumber,address userAddr) public view returns (uint256 offeringTokenAmount,uint256 currentAmount,uint256 refundingTokenAmount) {
+    require (blocknumber > endBlock, 'not harvest time');
+    
+    UserInfo storage user = userInfo[userAddr];
+    require (user.amount > 0, 'have you participated?');
+    if(!user.claimed){
+      offeringTokenAmount = getOfferingAmount(userAddr);
+      refundingTokenAmount = getRefundingAmount(userAddr);
+    }else{
+      offeringTokenAmount = 0;
+      refundingTokenAmount = 0;
+    }
+    //calc release
+    currentAmount = user.offeringTokenAmount.mul(totalAmountReleased).div(offeringAmount).sub(user.amountDept);
+  }
+
   function hasHarvest(address _user) external view returns(bool) {
       return userInfo[_user].claimed;
   }
