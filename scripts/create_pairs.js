@@ -30,19 +30,19 @@ async function main() {
   const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory");
   const factory = await UniswapV2Factory.attach(addrs.uniswap.factory);
   
-  await ensurePair(factory,addrs.usdt,addrs.husd);
-  await ensurePair(factory,addrs.hbtc,addrs.husd);
-  await ensurePair(factory,addrs.heth,addrs.husd);
+  // await ensurePair(factory,addrs.usdt,addrs.husd);
+  // await ensurePair(factory,addrs.hbtc,addrs.husd);
+  // await ensurePair(factory,addrs.heth,addrs.husd);
   await ensurePair(factory,addrs.wht,addrs.husd);
-  await ensurePair(factory,addrs.hbtc,addrs.wht);
-  await ensurePair(factory,addrs.heth,addrs.wht);
+  // await ensurePair(factory,addrs.hbtc,addrs.wht);
+  // await ensurePair(factory,addrs.heth,addrs.wht);
 
-  await ensurePair(factory,addrs.hltc,addrs.husd);
-  await ensurePair(factory,addrs.hdot,addrs.husd);
+  // await ensurePair(factory,addrs.hltc,addrs.husd);
+  // await ensurePair(factory,addrs.hdot,addrs.husd);
 
-  await ensurePair(factory,addrs.bxh,addrs.usdt);
-  await ensurePair(factory,addrs.bxh,addrs.husd);
-  await ensurePair(factory,addrs.bxh,addrs.wht);
+  // await ensurePair(factory,addrs.bxh,addrs.usdt);
+  // await ensurePair(factory,addrs.bxh,addrs.husd);
+  // await ensurePair(factory,addrs.bxh,addrs.wht);
 
   
 

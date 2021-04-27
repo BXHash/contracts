@@ -20,6 +20,8 @@ contract RaiseDAO is ReentrancyGuard,Ownable {
       bool claimed;  // default false
       uint256   offeringTokenAmount;//how many tokens the user can be offered;
       uint256   amountDept;//tokens already withdraw by users;
+      uint256   refundingTokenAmount;//how many tokens the user will be refund;
+      bool   refundClaimed;
   }
 
   // admin address
@@ -32,6 +34,11 @@ contract RaiseDAO is ReentrancyGuard,Ownable {
   uint256 public startBlock;
   // The block number when IFO ends
   uint256 public endBlock;
+
+  // The block number when final withdraw ends
+  uint256 public finalWithdrawBlock;
+  
+
   // total amount of raising tokens need to be raised
   uint256 public raisingAmount;
   // total amount of offeringToken that will offer
@@ -69,6 +76,7 @@ contract RaiseDAO is ReentrancyGuard,Ownable {
       address _offeringToken,
       uint256 _startBlock,
       uint256 _endBlock,
+      uint256 _finalWithdrawBlock,
       uint256 _offeringAmount,
       uint256 _raisingAmount
   ) public onlyOwner {
@@ -76,9 +84,18 @@ contract RaiseDAO is ReentrancyGuard,Ownable {
       offeringToken = _offeringToken;
       startBlock = _startBlock;
       endBlock = _endBlock;
+      finalWithdrawBlock = _finalWithdrawBlock;
       offeringAmount = _offeringAmount;
       raisingAmount= _raisingAmount;
       totalAmount = 0;
+  }
+
+  function setFinalWithdrawBlock(uint256 _finalWithdrawBlock) public onlyOwner{
+    finalWithdrawBlock = _finalWithdrawBlock;
+  }
+
+  function setOfferingToken(address _offeringToken) public onlyOwner{
+    offeringToken = _offeringToken;
   }
 
   function addReleasePeroid(uint256 _startBlock,uint256 _endBlock,uint256 _releaseAmount) public onlyOwner {
@@ -199,14 +216,21 @@ contract RaiseDAO is ReentrancyGuard,Ownable {
       uint256 offeringTokenAmount = getOfferingAmount(msg.sender);
       uint256 refundingTokenAmount = getRefundingAmount(msg.sender);
       user.offeringTokenAmount = offeringTokenAmount;
-      // offeringToken.safeTransfer(address(msg.sender), offeringTokenAmount);
-      if (refundingTokenAmount > 0) {
+      user.refundingTokenAmount = refundingTokenAmount;
+      user.claimed = true;
+    }
+
+    if(!user.refundClaimed){
+      uint256 refundingTokenAmount= user.refundingTokenAmount;
+      if (refundingTokenAmount > 0 && block.number >= finalWithdrawBlock) {
+        user.refundClaimed = true;
         // lpToken.safeTransfer(address(msg.sender), refundingTokenAmount);
         TransferHelper.safeTransfer(lpToken, address(msg.sender), refundingTokenAmount);
         emit HarvestRefund(msg.sender, refundingTokenAmount);
       }
-      user.claimed = true;
     }
+
+
     //calc release
     updateRelease();
     uint256  currentAmount = user.offeringTokenAmount.mul(totalAmountReleased).div(offeringAmount).sub(user.amountDept);
@@ -277,6 +301,7 @@ contract RaiseDAO is ReentrancyGuard,Ownable {
   function finalWithdraw(uint256 _lpAmount, uint256 _offerAmount) public onlyOwner {
     require (_lpAmount <= ERC20(lpToken).balanceOf(address(this)), 'not enough token 0');
     require (_offerAmount <= ERC20(offeringToken).balanceOf(address(this)), 'not enough token 1');
+    
     // lpToken.safeTransfer(address(msg.sender), _lpAmount);
     TransferHelper.safeTransfer(lpToken, address(msg.sender), _lpAmount);
     // offeringToken.safeTransfer(address(msg.sender), _offerAmount);

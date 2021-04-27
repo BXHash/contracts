@@ -17,7 +17,6 @@ async function main() {
 
 
   const accounts = await ethers.getSigners();
-
  
   const HUSD = await hre.ethers.getContractFactory("HRC20HUSD");
 
@@ -37,7 +36,7 @@ async function main() {
 
 
 
-const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory");
+  const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory");
   // const factory = await UniswapV2Factory.deploy(feeAdrr);
   // await factory.deployed();
 
@@ -73,12 +72,12 @@ const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory")
   console.log("allowu is:", allowu);
 
 
-var bal = await husd.balanceOf(pair);
+  var bal = await husd.balanceOf(pair);
 
   console.log("HUSD.pair=:",bal);
 
 
-  await husd.transfer(pair,1);
+    await husd.transfer(pair,1);
 
 
    bal = await husd.balanceOf(pair);
@@ -88,7 +87,7 @@ var bal = await husd.balanceOf(pair);
 
 
   const vtf = await husd.transferFrom(accounts[0].address,pair,2);
-console.log("transferFrom is:", vv);  
+  console.log("transferFrom is:", vv);  
 
   console.log("HUSD.pair3=:",await husd.balanceOf(accounts[1].address));
 
