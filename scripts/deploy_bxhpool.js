@@ -21,17 +21,28 @@ async function main() {
 
 
   const BXHPool = await hre.ethers.getContractFactory("BXHPool");
-  var amount = web3.utils.toWei('42','ether');
-  const bxhpool = await BXHPool.deploy(bxh.address,amount,3196000,970);
-  await bxhpool.deployed();
-  console.log("BXHPool deployed to:", bxhpool.address);
-  ;
+  var amount = web3.utils.toWei('100','ether');
+  // const bxhpool = await BXHPool.deploy(bxh.address,amount,3196000,970);
+
+  var provider = ethers.provider;
+  var blocknumber = await provider.getBlockNumber();
+
   
-  await bxhpool.transferOwnership(addrs.owner);
+  // const bxhpool = await BXHPool.deploy(bxh.address,amount,blocknumber,970);
+  // await bxhpool.deployed();
+  const bxhpool = await BXHPool.attach(addrs.bxhpool);
+  // console.log("BXHPool deployed to:", bxhpool.address);
+  ;
 
-  const newowner = await bxhpool.owner();
+  await bxh.addMinter(bxhpool.address);
+  console.log("pool is minter ",await bxh.isMinter(bxhpool.address));
 
-  console.log("BXHPool owner transfer from:%s to %s", owner,newowner);
+  
+  // await bxhpool.transferOwnership(addrs.owner);
+
+  // const newowner = await bxhpool.owner();
+
+  // console.log("BXHPool owner transfer from:%s to %s", owner,newowner);
 
 
 }

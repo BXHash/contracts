@@ -24,7 +24,7 @@ const accounts = await ethers.getSigners();
   const husd = await HUSD.deploy("Heco-Peg HUSD Token","HUSD",8);
 
   await husd.deployed();
-  console.log("HUSD deployed to:%s,%d", husd.address, await husd.decimals());
+  console.log("HUSD deployed to: %s ,%d", husd.address, await husd.decimals());
 
 
   const hbtc = await ERC20Template.deploy(accounts[0].address,accounts[0].address,"Heco-Peg HBTC Token","HBTC",18);

@@ -19,18 +19,18 @@ async function main() {
 
   console.log("deploy account: " + accounts[0].address);
   const BXH = await hre.ethers.getContractFactory("BXHToken");
-  // const bxh = await BXH.deploy();
-  // await bxh.deployed();
-  const bxh = await BXH.attach(addrs.bxh);
+  const bxh = await BXH.deploy();
+  await bxh.deployed();
+  // const bxh = await BXH.attach(addrs.bxh);
   console.log("BXH deployed to:", bxh.address);
 
-  const owner = await bxh.owner();
+  // const owner = await bxh.owner();
 
-  await bxh.transferOwnership(addrs.owner);
+  // await bxh.transferOwnership(addrs.owner);
 
-  await bxh.owner();
-  const newowner = await bxh.owner();
-  console.log("BXH owner transfer from:%s to %s", owner,newowner);
+  // await bxh.owner();
+  // const newowner = await bxh.owner();
+  // console.log("BXH owner transfer from:%s to %s", owner,newowner);
 
 
 }

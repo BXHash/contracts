@@ -22,7 +22,7 @@ async function main() {
 
   const BXHDao = await hre.ethers.getContractFactory("BXHDao");
 ;
-  const bxhDao = await BXHDao.deploy("BXH-USDT-LP-7",201600,"0x8611a52e8AC5E10651DF7C4b58F42536f0bd2e7E","0x56146B129017940D06D8e235c02285A3d05D6B7C","0x56146B129017940D06D8e235c02285A3d05D6B7C");
+  const bxhDao = await BXHDao.deploy("BXH-HT-30",864000,"0x5121b3a0b9d995c7c11a0a6b65d27133633d1332","0x56146B129017940D06D8e235c02285A3d05D6B7C","0x56146B129017940D06D8e235c02285A3d05D6B7C");
   await bxhDao.deployed();
   console.log("BXHDao deployed to:", bxhDao.address);
   

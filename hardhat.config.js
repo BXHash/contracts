@@ -8,7 +8,7 @@ require("brewchain_provider");
 
 const accounts = {
   mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
-  // initialIndex: 8
+  initialIndex: 8
   // accountsBalance: "990000000000000000000",
 }
 
@@ -59,27 +59,28 @@ module.exports = {
     // Obtain one at https://etherscan.io/
     apiKey:"6IQTZTMD392X2U2SYZBABWDS8KB6D8UD4T"
   },
-  defaultNetwork: "brewchain",
+  defaultNetwork: "local",
   networks: {
     local: {
       url: `http://localhost:8545`,
       accounts,
       bxh:{
          address:{
-           fee: "f39fd6e51aad88f6f4ce6ab8827279cfffb92266",
-           usdt:"0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-           husd:"0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-           hbtc:"0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-           heth:"0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-           hltc:"0x0165878A594ca255338adfa4d48449f69242Eb8F",
-           wht :"0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-           hdot:"0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
-           bxh :"CD8a1C3ba11CF5ECfa6267617243239504a98d90",
-           bxhpool:"0x9E545E3C0baAB3E08CdfD552C960A1050f373042",
+           fee: "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199",
+           usdt:"0x2E0716Bb0c304563A9B6fCfDb0F68853E2726ea9",
+           husd:"0x93BC7B91095b858973E09840B9843f80e0D787c8",
+           hbtc:"0x6D6d5aB9BC123eA4e158b4DEe3b2FBEcA653d210",
+           heth:"0x4ce26bB44E7deca7ac251B9A417fd8fc3C9Ddb7f",
+           hltc:"0xbB84aA7b4ccD3578a45BB3090E9c33709E135F1f",
+           wht :"0x02894BfC9c0706e79A075034E773665E1DaAc232",
+           hdot:"0x9bDfE084d23D3d1275AE961e3FD2E82A4d11Cd89",
+           bxh :"0xa0E9406b961393d90D247B690ecAc709364ADA86",
+           bxhpool:"0x2De757e2Aade1dEbA57Ee68ca69A5Dc6642551da",
            uniswap:{
-             factory:"0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB",
-             router:"0x96F3Ce39Ad2BfDCf92C0F6E2C2CAbF83874660Fc",
+             factory:"0xBb032F40F0cF21236314ECB438dC38d06F936ec6",
+             router:"0x0a0B85D9Ee736253348f266665845A915b398097",
            },
+           delp: "0x9eCdfEDA21F3100466e6695E6f74BBa6EDB19332",
            airdrop:"0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
            investTeamLock:"0xc582Bc0317dbb0908203541971a358c44b1F3766",
            marketTeamLock:"0x74Cf9087AD26D541930BaC724B7ab21bA8F00a27",
@@ -115,10 +116,10 @@ module.exports = {
            hdot:"0xa2c49cee16a5e5bdefde931107dc1fae9f7773e3",
            bxh :"0xcBD6Cb9243d8e3381Fea611EF023e17D1B7AeDF0",
            uniswap:{
-             factory:"0xe0367ec2bd4Ba22B1593E4fEFcB91D29DE6C512a",
+             factory:"0xB8617E2FC9dbFd51781B8D281b725976E3B43f9d",
              router:"0x00eFB96dBFE641246E961b472C0C3fC472f6a694",
            },
-           bxhpool: "0xe3e75Ab09FA0E045523A6B4E81bdB5F11a8bc99c",
+           bxhpool: "0x55bf276e2a2e10AEB62c0Ed37D36585cB24d9cC1",
            airdrop:"0xcA1530D5282C703bf3c73c6A08794020dae8b397",
            airdropPool:"0x0Ef67c16904Af312796560dF80E60581C43C4e24",
            investTeamLock:"0xD7B6192601F6e671E42926797a2462a5b6B7b13d",

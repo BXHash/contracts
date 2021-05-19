@@ -40,14 +40,15 @@ async function main() {
 
 
   const UniswapV2Factory = await hre.ethers.getContractFactory("UniswapV2Factory");
-  const factory = await UniswapV2Factory.deploy(feeAdrr);
+  const factory = await UniswapV2Factory.deploy(accounts[0].address);
   await factory.deployed();
   // const factory = await UniswapV2Factory.attach(addrs.uniswap.factory);
 
   console.log("factory deployed to:", factory.address);
 
-  // await factory.setFeeTo(feeAdrr);
-
+  // await factory.setFeeToSetter(accounts[9].address);
+  await factory.setFeeTo(accounts[11].address);
+  
   // console.log("factory setfee to:", feeAdrr);
 
   console.log("factory fee to:", await factory.feeTo());
