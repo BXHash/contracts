@@ -20,12 +20,22 @@ async function main() {
   console.log("BXH attached to:", bxh.address);
 
 
-  const BXHDao = await hre.ethers.getContractFactory("BXHDao");
-;
-  const bxhDao = await BXHDao.deploy("BXH-USDT-30",864000,"0x5121b3a0b9d995c7c11a0a6b65d27133633d1332","0x56146B129017940D06D8e235c02285A3d05D6B7C","0x56146B129017940D06D8e235c02285A3d05D6B7C");
-  await bxhDao.deployed();
-  console.log("BXHDao deployed to:", bxhDao.address);
+
+  const XToken = await hre.ethers.getContractFactory("XToken");
   
+  const xtoken = await XToken.attach(addrs.xtoken);
+
+
+  const BXHDAOPool = await hre.ethers.getContractFactory("BXHDAOPool");
+  
+  
+  const bxhDaoPool = await BXHDAOPool.deploy(xtoken.address,bxh.address,addrs.usdt,1625486400);
+  await bxhDaoPool.deployed();
+  console.log("BXHDAOPool deployed to:", bxhDaoPool.address);
+  
+  await bxhDaoPool.transferOwnership("0x56146B129017940D06D8e235c02285A3d05D6B7C");
+
+  // await xtoken.transferOwnership("0x56146B129017940D06D8e235c02285A3d05D6B7C");
 
 
 }

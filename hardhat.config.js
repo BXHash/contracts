@@ -126,6 +126,9 @@ module.exports = {
            marketTeamLock:"0xee73ae5C86fd78DbFF1e07a6e9e42D4F1EafDeb0",
            devTeamLock:"0x186Dc1ebF9281F98167cfD0A0794B9934587A142",
            raiseDao:"0x98eDDadCfde04dC22a0e62119617e74a6Bc77313",
+           xtoken:"0x11Ca689B3aB2f0d28d95dE62bbbB384C4173c893",
+           daopool:"0x2f15fD83710aD8E9ea5E1A25ba05942Eaf389307",
+           daov3:"0x6c9985eB3288f3E89E54ceeE818028aB81e532bC",
 
          }
       },
