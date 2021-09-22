@@ -148,7 +148,7 @@ contract BXHDAOPoolV3 is Ownable{
         if (user.amount > 0) {
             uint256 pendingBlockAmount = user.amount.mul(accRewardsPerShare).div(1e12).sub(user.rewardDebt);
             if (pendingBlockAmount > 0) {
-                safeTransfer(_to, pendingAmount);
+                safeTransfer(_to, pendingBlockAmount);
             }
         }
         if (_amount > 0) {
