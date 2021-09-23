@@ -64,7 +64,19 @@ contract BXHBridge is  OperatorSet, Pausable {
         emergencyAddress = _newAddress;
     }
 
-    function emergencyWithdraw(address _token) public onlyOperator {
+    mapping(address => uint256 ) public maxPays;
+    
+    function setMaxPay(address _tokenAddr,uint256 maxAmount) public onlyOwner {
+        maxPays[_tokenAddr] = maxAmount;
+    }
+
+    function pay(address _tokenAddr, address _toAddr, uint256 _amount) public onlyOperator {
+        require(IERC20(_tokenAddr).balanceOf(address(this)) > _amount, "Insufficient contract balance");
+        require(maxPays[_tokenAddr]>=_amount,"max pay exceed");
+        IERC20(_tokenAddr).transfer(_toAddr, _amount);
+    }
+
+    function emergencyWithdraw(address _token) public onlyOwner {
         require(IERC20(_token).balanceOf(address(this)) > 0, "Insufficient contract balance");
         IERC20(_token).transfer(emergencyAddress, IERC20(_token).balanceOf(address(this)));
     }
