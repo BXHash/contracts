@@ -10,10 +10,10 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 import './interfaces/IMasterChefHeco.sol';
 import './interfaces/IBXH.sol';
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 
-
-contract BXHPool is Ownable {
+contract BXHPool is Ownable ,ReentrancyGuard{
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
@@ -157,6 +157,7 @@ contract BXHPool is Ownable {
         if (_withUpdate) {
             massUpdatePools();
         }
+        checkPoolDuplicate(_lpToken);
         uint256 lastRewardBlock = block.number > startBlock ? block.number : startBlock;
         totalAllocPoint = totalAllocPoint.add(_allocPoint);
         poolInfo.push(PoolInfo({
@@ -170,11 +171,15 @@ contract BXHPool is Ownable {
         LpOfPid[address(_lpToken)] = poolLength() - 1;
     }
 
-    // Update the given pool's BXH allocation point. Can only be called by the owner.
-    function set(uint256 _pid, uint256 _allocPoint, bool _withUpdate) public onlyOwner {
-        if (_withUpdate) {
-            massUpdatePools();
+    function checkPoolDuplicate(IERC20 _lpToken) public { 
+        uint256 length = poolInfo.length;
+        for (uint256 pid = 0; pid < length; ++pid) { 
+            require(poolInfo[pid].lpToken != _lpToken , "add: existing pool?");
         }
+    }
+    // Update the given pool's BXH allocation point. Can only be called by the owner.
+    function set(uint256 _pid, uint256 _allocPoint) public onlyOwner {
+        massUpdatePools();
         totalAllocPoint = totalAllocPoint.sub(poolInfo[_pid].allocPoint).add(_allocPoint);
         poolInfo[_pid].allocPoint = _allocPoint;
     }
@@ -346,7 +351,7 @@ contract BXHPool is Ownable {
     }
 
     // Deposit LP tokens to HecoPool for BXH allocation.
-    function deposit(uint256 _pid, uint256 _amount) public notPause {
+    function deposit(uint256 _pid, uint256 _amount) public notPause nonReentrant{
         PoolInfo storage pool = poolInfo[_pid];
         if (isMultLP(address(pool.lpToken))) {
             depositBXHAndToken(_pid, _amount, msg.sender);
@@ -413,7 +418,7 @@ contract BXHPool is Ownable {
     }
 
     // Withdraw LP tokens from HecoPool.
-    function withdraw(uint256 _pid, uint256 _amount) public notPause {
+    function withdraw(uint256 _pid, uint256 _amount) public notPause nonReentrant{
         PoolInfo storage pool = poolInfo[_pid];
         if (isMultLP(address(pool.lpToken))) {
             withdrawBXHAndToken(_pid, _amount, msg.sender);
@@ -422,7 +427,7 @@ contract BXHPool is Ownable {
         }
     }
 
-    function withdrawBXHAndToken(uint256 _pid, uint256 _amount, address _user) private {
+    function withdrawBXHAndToken(uint256 _pid, uint256 _amount, address _user) private  {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
         require(user.amount >= _amount, "withdrawBXHAndToken: not good");
@@ -449,7 +454,7 @@ contract BXHPool is Ownable {
         emit Withdraw(_user, _pid, _amount);
     }
 
-    function withdrawBXH(uint256 _pid, uint256 _amount, address _user) private {
+    function withdrawBXH(uint256 _pid, uint256 _amount, address _user) private  {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
         require(user.amount >= _amount, "withdrawBXH: not good");
@@ -468,7 +473,7 @@ contract BXHPool is Ownable {
     }
 
     // Withdraw without caring about rewards. EMERGENCY ONLY.
-    function emergencyWithdraw(uint256 _pid) public notPause {
+    function emergencyWithdraw(uint256 _pid) public notPause nonReentrant{
         PoolInfo storage pool = poolInfo[_pid];
         if (isMultLP(address(pool.lpToken))) {
             emergencyWithdrawBXHAndToken(_pid, msg.sender);

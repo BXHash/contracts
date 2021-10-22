@@ -109,7 +109,7 @@ contract UniswapV2Router02 is IUniswapV2Router02 {
             amountHTMin
         );
         address pair = UniswapV2Library.pairFor(factory, token, WHT);
-        TransferHelper.safeTransferFrom(token, msg.sender, pair, amountTokenDesired);
+        TransferHelper.safeTransferFrom(token, msg.sender, pair, amountToken);
         IWHT(WHT).deposit{value: amountHT}();
         assert(IWHT(WHT).transfer(pair, amountHT));
         liquidity = IUniswapV2Pair(pair).mint(to);

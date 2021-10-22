@@ -138,13 +138,13 @@ contract TeamTimeLock is Ownable{
 
     function withDraw(address beneficiary) notPause external  {
         UserInfo storage user = userInfos[beneficiary];
-        if(user.amount > 0){   
-            uint256 reward = getCurrentUserReward(beneficiary);
-            require(reward > 0, "TimeLock: no reward");
-            user.rewardDebt = user.rewardDebt.add(reward);
-            token.safeTransfer(beneficiary, reward);
-            emit WithDraw(msg.sender, beneficiary, reward);
-        }
+        require(user.amount>0,"user amount zero");
+        uint256 reward = getCurrentUserReward(beneficiary);
+        require(reward > 0, "TimeLock: no reward");
+        user.rewardDebt = user.rewardDebt.add(reward);
+        token.safeTransfer(beneficiary, reward);
+        emit WithDraw(msg.sender, beneficiary, reward);
+    
     }
 
 
